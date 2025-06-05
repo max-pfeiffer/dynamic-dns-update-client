@@ -1,1 +1,47 @@
-# dynamic-dns-update-client
+[![Pipeline](https://github.com/max-pfeiffer/dynamic-dns-update-client/actions/workflows/pipeline.yml/badge.svg)](https://github.com/max-pfeiffer/dynamic-dns-update-client/actions/workflows/pipeline.yml)
+
+# Dynamic DNS Update Client
+A CLI tool for updating the IP address for dynamic DNS providers.
+It obtains the current IP address by calling one the following IP address services
+using a HTTP GET request:
+* [ipfy](https://www.ipify.org/)
+* [DynDNS](https://help.dyn.com/remote-access-api/checkip-tool/)
+
+It then updates the obtained IP address with another HTTP GET request at the dynamic DNS provider using
+the specified URL parameters and authentication method.
+
+## Usage
+```shell
+$ dynamic-dns-update-client --help
+Usage: dynamic-dns-update-client [OPTIONS] DYNAMIC_DNS_PROVIDER_URL
+
+  Dynamic DNS Update Client.
+
+  A CLI tool for updating the IP address for dynamic DNS providers. It obtains
+  the current IP address by calling one the following IP address services
+  using a HTTP GET request:
+
+  - ipfy: https://www.ipify.org/
+
+  - dyndns: https://help.dyn.com/remote-access-api/checkip-tool/
+
+  It then updates the obtained IP address with another HTTP GET request at the
+  dynamic DNS provider using the specified URL parameters and authentication
+  method.
+
+Options:
+  --ip-address-provider [ipfy|dyndns]
+                                  Type of IP address provider. Default: ipfy
+  --ip-address-url-parameter-name TEXT
+                                  Name of the URL parameter for IP address. It
+                                  will be appended to the dynamic DNS provider
+                                  URL.  [required]
+  --url-parameter URL_PARAMETER   URL parameter which will be appended to the
+                                  dynamic DNS provider URL. Format:
+                                  param=value
+  --basic-auth-username TEXT      Basic Auth username for calling dynamic DNS
+                                  provider URL.
+  --basic-auth-password TEXT      Basic Auth password for calling dynamic DNS
+                                  provider URL.
+  --help                          Show this message and exit.
+```

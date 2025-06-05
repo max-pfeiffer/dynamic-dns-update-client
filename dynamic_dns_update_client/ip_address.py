@@ -11,8 +11,8 @@ from dynamic_dns_update_client.constants import DYNDNS_URL, IPFY_URL
 class IpAddressProviderType(enum.Enum):
     """Enum type for IP address providers."""
 
-    IPFY = enum.auto()
-    DYNDNS = enum.auto()
+    IPFY = "ipfy"
+    DYNDNS = "dyndns"
 
 
 def ipfy() -> str:
