@@ -17,18 +17,21 @@ from dynamic_dns_update_client.types import UrlParameterType, UrlType
 )
 @click.option(
     "--ip-address-provider",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_PROVIDER",
     type=click.Choice(IpAddressProviderType, case_sensitive=False),
     default=IpAddressProviderType.IPFY,
     help=f"Type of IP address provider. Default: {IpAddressProviderType.IPFY.value}",
 )
 @click.option(
     "--ip-address-url-parameter-name",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_URL_PARAMETER_NAME",
     required=True,
     help="Name of the URL parameter for IP address. "
     "It will be appended to the dynamic DNS provider URL.",
 )
 @click.option(
     "--url-parameter",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_URL_PARAMETER",
     type=UrlParameterType(),
     multiple=True,
     help="URL parameter which will be appended to the dynamic DNS provider URL. "
@@ -36,10 +39,12 @@ from dynamic_dns_update_client.types import UrlParameterType, UrlType
 )
 @click.option(
     "--basic-auth-username",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_BASIC_AUTH_USERNAME",
     help="Basic Auth username for calling dynamic DNS provider URL.",
 )
 @click.option(
     "--basic-auth-password",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_BASIC_AUTH_PASSWORD",
     help="Basic Auth password for calling dynamic DNS provider URL.",
 )
 def cli(

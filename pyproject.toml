@@ -1,7 +1,7 @@
 [project]
 name = "dynamic-dns-update-client"
 version = "0.1.0"
-description = ""
+description = "A CLI tool for updating the IP address at dynamic DNS providers."
 authors = [
     {name = "Max Pfeiffer",email = "max@maxpfeiffer.ch"}
 ]
@@ -12,6 +12,10 @@ dependencies = [
     "click (>=8.2.1,<9.0.0)",
     "requests (>=2.32.3,<3.0.0)"
 ]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 
@@ -40,7 +44,7 @@ select = [
 [tool.ruff.lint.pydocstyle]
 convention = "pep257"
 
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
