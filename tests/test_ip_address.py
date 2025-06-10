@@ -51,17 +51,23 @@ def test_dyndns(mocker: MockerFixture, exc: bool) -> None:
 
 
 @pytest.mark.parametrize("ipv6", [True, False])
-def test_interface(mocker: MockerFixture, ifconfig_output: str, ipv6: bool) -> None:
+def test_interface_ifconfig(
+    mocker: MockerFixture, ifconfig_output: str, ipv6: bool
+) -> None:
     """Test interface method.
 
     :param mocker:
     """
+    mocker_cli_command_exists = mocker.patch(
+        "dynamic_dns_update_client.ip_address.cli_command_exists", return_value=False
+    )
     mocked_execute_cli_command = mocker.patch(
         "dynamic_dns_update_client.ip_address.execute_cli_command",
         return_value=ifconfig_output,
     )
     result = interface("en0", ipv6)
 
+    mocker_cli_command_exists.assert_called_once()
     mocked_execute_cli_command.assert_called_once()
     if ipv6:
         assert result == "fe80::4b4:abb1:e8e0:214a"
