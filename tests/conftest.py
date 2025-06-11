@@ -29,3 +29,17 @@ def ifconfig_output() -> str:
 	media: autoselect
 	status: active
     """
+
+
+@pytest.fixture(scope="session")
+def ip_output() -> str:
+    """Ip stdout.
+
+    :return:
+    """
+    return (
+        "7: wan    inet 192.168.0.10/24 brd 192.168.0.255 scope global wan\\       "
+        "valid_lft forever preferred_lft forever\n"
+        "7: wan    inet6 2a02:1210:5207:3100:1491:82ff:fe2e:2489/64 scope global"
+        " dynamic noprefixroute \\       valid_lft 21549sec preferred_lft 7149sec\n"
+    )

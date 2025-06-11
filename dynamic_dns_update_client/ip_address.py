@@ -56,21 +56,26 @@ def interface(ip_interface: str, ipv6: bool) -> str:
     :param ipv6:
     :return:
     """
+    if ipv6:
+        inet = "inet6"
+    else:
+        inet = "inet"
+
     if cli_command_exists("ip"):
         arguments = ["ip", "-o", "addr", "show", "dev", ip_interface, "scope", "global"]
         try:
             result: str = execute_cli_command(arguments)
-            return result
+            for line in result.splitlines():
+                parts = line.strip().split(" ")
+                if parts[5] == inet:
+                    ip_address = parts[6].split("/")[0]
+                    return ip_address
+            raise click.ClickException("Cannot find IP address in ip output.")
         except CalledProcessError as exc:
             raise click.ClickException(f"Error executing: {arguments}") from exc
     else:
         # If ip command is not available, we need to use the deprecated ifconfig command
         arguments = ["ifconfig", ip_interface]
-        if ipv6:
-            inet = "inet6"
-        else:
-            inet = "inet"
-
         try:
             result = execute_cli_command(arguments)
             for line in result.splitlines():
