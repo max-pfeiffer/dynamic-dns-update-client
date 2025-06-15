@@ -19,8 +19,8 @@ from dynamic_dns_update_client.types import UrlParameterType, UrlType
     "--ip-address-provider",
     envvar="DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_PROVIDER",
     type=click.Choice(IpAddressProviderType, case_sensitive=False),
-    default=IpAddressProviderType.IPFY,
-    help=f"Type of IP address provider. Default: {IpAddressProviderType.IPFY.value}",
+    default=IpAddressProviderType.IPIFY,
+    help=f"Type of IP address provider. Default: {IpAddressProviderType.IPIFY.value}",
 )
 @click.option(
     "--ip-network",

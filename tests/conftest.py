@@ -1,6 +1,7 @@
 """Test fixtures."""
 
 import pytest
+from _pytest.fixtures import SubRequest
 from click.testing import CliRunner
 
 
@@ -43,3 +44,12 @@ def ip_output() -> str:
         "7: wan    inet6 2a02:1210:5207:3100:1491:82ff:fe2e:2489/64 scope global"
         " dynamic noprefixroute \\       valid_lft 21549sec preferred_lft 7149sec\n"
     )
+
+
+@pytest.fixture(scope="function")
+def openwrt_test_data(request: SubRequest) -> tuple[str, bool]:
+    """OpenWRT function output."""
+    if request.param:
+        return "2a02:1210:5207:3100:1491:82ff:fe2e:2489", request.param
+    else:
+        return "192.168.0.10", request.param

@@ -14,13 +14,13 @@ from dynamic_dns_update_client.utils import cli_command_exists, execute_cli_comm
 class IpAddressProviderType(enum.Enum):
     """Enum type for IP address providers."""
 
-    NETWORK = "network"
+    OPENWRT_NETWORK = "openwrt_network"
     INTERFACE = "interface"
-    IPFY = "ipfy"
+    IPIFY = "ipify"
     DYNDNS = "dyndns"
 
 
-def network(ip_network: str, ipv6: bool) -> str:
+def openwrt_network(ip_network: str, ipv6: bool) -> str:
     """Get IP address for a network.
 
     This only works on an OpenWRT machine as we are calling OpenWRT
@@ -30,16 +30,28 @@ def network(ip_network: str, ipv6: bool) -> str:
     :param ipv6:
     :return:
     """
+    openwrt_script = "/lib/functions/network.sh"
     if ipv6:
         openwrt_function = "network_get_ipaddr6"
     else:
         openwrt_function = "network_get_ipaddr"
 
-    if cli_command_exists(openwrt_function):
-        arguments = [openwrt_function, ip_network]
+    if cli_command_exists(openwrt_script):
+        arguments = [
+            "source",
+            openwrt_script,
+            "&&",
+            openwrt_function,
+            "IP_ADDRESS",
+            ip_network,
+            "&&",
+            "echo",
+            "$IP_ADDRESS",
+        ]
         try:
             result: str = execute_cli_command(arguments)
-            return result
+            ip_address = result.strip()
+            return ip_address
         except CalledProcessError as exc:
             raise click.ClickException(f"Error executing: {arguments}") from exc
     else:
@@ -88,7 +100,7 @@ def interface(ip_interface: str, ipv6: bool) -> str:
             raise click.ClickException(f"Error executing: {arguments}") from exc
 
 
-def ipfy(ipv6: bool) -> str:
+def ipify(ipv6: bool) -> str:
     """Get IP address from Ipfy service.
 
     See: https://www.ipify.org/
@@ -128,23 +140,26 @@ def dyndns(ipv6: bool) -> str:
 
 
 def get_ip_address(
-    type: IpAddressProviderType, ip_network: str, ip_interface: str, ipv6: bool
+    ip_address_provider_type: IpAddressProviderType,
+    ip_network: str,
+    ip_interface: str,
+    ipv6: bool,
 ) -> str:
     """Get IP address for a provider type.
 
-    :param type:
+    :param ip_address_provider_type:
     :param ip_network:
     :param ip_interface:
     :param ipv6:
     :return:
     """
-    match type:
-        case IpAddressProviderType.NETWORK:
-            return network(ip_network, ipv6)
+    match ip_address_provider_type:
+        case IpAddressProviderType.OPENWRT_NETWORK:
+            return openwrt_network(ip_network, ipv6)
         case IpAddressProviderType.INTERFACE:
             return interface(ip_interface, ipv6)
-        case IpAddressProviderType.IPFY:
-            return ipfy(ipv6)
+        case IpAddressProviderType.IPIFY:
+            return ipify(ipv6)
         case IpAddressProviderType.DYNDNS:
             return dyndns(ipv6)
         case _:
