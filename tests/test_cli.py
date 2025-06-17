@@ -14,7 +14,7 @@ from tests.utils import FakeResponse
         [
             "https://example.com",
             "--ip-address-provider",
-            "ipfy",
+            "ipify",
             "--ip-address-url-parameter-name",
             "ip",
             "--url-parameter",
@@ -27,7 +27,7 @@ from tests.utils import FakeResponse
         [
             "https://example.com",
             "--ip-address-provider",
-            "ipfy",
+            "ipify",
             "--ip-address-url-parameter-name",
             "ip",
             "--url-parameter",
@@ -70,14 +70,14 @@ def test_cli(cli_runner: CliRunner, mocker: MockerFixture, args: list[str]) -> N
     "env",
     [
         {
-            "DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_PROVIDER": "ipfy",
+            "DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_PROVIDER": "ipify",
             "DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_URL_PARAMETER_NAME": "ip",
             "DYNAMIC_DNS_UPDATE_CLIENT_URL_PARAMETER": "foo=bar",
             "DYNAMIC_DNS_UPDATE_CLIENT_BASIC_AUTH_USERNAME": "username",
             "DYNAMIC_DNS_UPDATE_CLIENT_BASIC_AUTH_PASSWORD": "password",
         },
         {
-            "DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_PROVIDER": "ipfy",
+            "DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_PROVIDER": "ipify",
             "DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_URL_PARAMETER_NAME": "ip",
             "DYNAMIC_DNS_UPDATE_CLIENT_URL_PARAMETER": "foo=bar boom=bang cat=mouse",
         },
