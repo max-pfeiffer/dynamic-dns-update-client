@@ -1,14 +1,16 @@
 """Module for acquiring IP addresses."""
 
 import enum
+from pathlib import Path
 from subprocess import CalledProcessError
 from xml.etree import ElementTree
 
 import click
+import ifcfg
 from requests import Response, get
 
 from dynamic_dns_update_client.constants import DYNDNS_URL, IPIFY_URL, IPIFY_V6_URL
-from dynamic_dns_update_client.utils import cli_command_exists, execute_cli_command
+from dynamic_dns_update_client.utils import execute_cli_command
 
 
 class IpAddressProviderType(enum.Enum):
@@ -36,7 +38,7 @@ def openwrt_network(ip_network: str, ipv6: bool) -> str:
     else:
         openwrt_function = "network_get_ipaddr"
 
-    if cli_command_exists(openwrt_script):
+    if Path(openwrt_script).exists():
         arguments = [
             "source",
             openwrt_script,
@@ -57,7 +59,8 @@ def openwrt_network(ip_network: str, ipv6: bool) -> str:
     else:
         raise click.BadOptionUsage(
             "--ip-address-provider",
-            "You can use the network IP address provider only on a OpenWRT machine.",
+            "You can use the openwrt_network IP address provider "
+            "only on an OpenWRT machine.",
         )
 
 
@@ -68,36 +71,15 @@ def interface(ip_interface: str, ipv6: bool) -> str:
     :param ipv6:
     :return:
     """
-    if ipv6:
-        inet = "inet6"
+    network_interfaces = ifcfg.interfaces()
+    net_if = network_interfaces.get(ip_interface)
+    if net_if is None:
+        raise click.ClickException(f"Network interface {ip_interface} not found")
     else:
-        inet = "inet"
-
-    if cli_command_exists("ip"):
-        arguments = ["ip", "-o", "addr", "show", "dev", ip_interface, "scope", "global"]
-        try:
-            result: str = execute_cli_command(arguments)
-            for line in result.splitlines():
-                parts = line.strip().split(" ")
-                if parts[5] == inet:
-                    ip_address = parts[6].split("/")[0]
-                    return ip_address
-            raise click.ClickException("Cannot find IP address in ip output.")
-        except CalledProcessError as exc:
-            raise click.ClickException(f"Error executing: {arguments}") from exc
-    else:
-        # If ip command is not available, we need to use the deprecated ifconfig command
-        arguments = ["ifconfig", ip_interface]
-        try:
-            result = execute_cli_command(arguments)
-            for line in result.splitlines():
-                parts = line.strip().split(" ")
-                if parts[0] == inet:
-                    ip_address = parts[1]
-                    return ip_address
-            raise click.ClickException("Cannot find IP address in ifconfig output.")
-        except CalledProcessError as exc:
-            raise click.ClickException(f"Error executing: {arguments}") from exc
+        if ipv6:
+            return net_if["inet6"][0]
+        else:
+            return net_if["inet"]
 
 
 def ipify(ipv6: bool) -> str:

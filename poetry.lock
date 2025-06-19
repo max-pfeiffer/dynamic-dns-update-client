@@ -294,6 +294,18 @@ files = [
 all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
 
 [[package]]
+name = "ifcfg"
+version = "0.24"
+description = "Python ifconfig wrapper for Unix/Linux/MacOSX + ipconfig for Windows"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "ifcfg-0.24-py2.py3-none-any.whl", hash = "sha256:950f31ddc3fdd877724fb4154b744434471106088ecf10170b96063c24b3c0b7"},
+    {file = "ifcfg-0.24.tar.gz", hash = "sha256:64f60f7a0d15c85876b76b5f79246ed8c27bf5f79e5753ec88287145884661ab"},
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.1.0"
 description = "brain-dead simple config-ini parsing"
@@ -610,4 +622,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "7de1a05b4ce9cfe89a84fa6ea32d4d98734a69df5cc0fab949203475eda4767e"
+content-hash = "df9d7251bfab0354c3215e36de6d95a55ff783dc9d1e1e4aa897b6373a1977d2"
