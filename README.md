@@ -71,6 +71,8 @@ Options:
                                   provider URL.
   --basic-auth-password TEXT      Basic Auth password for calling dynamic DNS
                                   provider URL.
+  --dry-run                       Instead of calling the dynamic DNS provider,
+                                  print the URL which would have been called.
   --help                          Show this message and exit.
 ```
 
@@ -86,4 +88,5 @@ DYNAMIC_DNS_UPDATE_CLIENT_IP_ADDRESS_URL_PARAMETER_NAME=ip
 DYNAMIC_DNS_UPDATE_CLIENT_URL_PARAMETER="foo=bar boom=bang cat=mouse"
 DYNAMIC_DNS_UPDATE_CLIENT_BASIC_AUTH_USERNAME=username
 DYNAMIC_DNS_UPDATE_CLIENT_BASIC_AUTH_PASSWORD=password
+DYNAMIC_DNS_UPDATE_CLIENT_DRY_RUN=0
 ```
