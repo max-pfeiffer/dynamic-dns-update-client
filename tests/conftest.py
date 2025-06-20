@@ -53,3 +53,32 @@ def openwrt_test_data(request: SubRequest) -> tuple[str, bool]:
         return "2a02:1210:5207:3100:1491:82ff:fe2e:2489", request.param
     else:
         return "192.168.0.10", request.param
+
+
+@pytest.fixture(scope="session")
+def ifcfg_test_data() -> dict[str, dict]:
+    """Ifcfg test data."""
+    return {
+        "en0": {
+            "_inet4": None,
+            "broadcast": "192.168.0.255",
+            "broadcasts": ["192.168.0.255"],
+            "device": "en0",
+            "ether": "5c:e9:1e:84:f8:f8",
+            "flags": "8863<up,broadcast,smart,running,simplex,multicast>",
+            "hostname": None,
+            "inet": "192.168.0.101",
+            "inet4": ["192.168.0.101"],
+            "inet6": [
+                "fe80::24:e427:fcb4:98c8",
+                "2a02:1210:5207:3100:1c62:56b2:d974:dd77",
+                "2a02:1210:5207:3100:29e0:a77f:95ed:93f1",
+            ],
+            "media": "autoselect",
+            "mtu": "1500",
+            "netmask": "255.255.255.0",
+            "netmasks": ["255.255.255.0"],
+            "prefixlens": ["64", "64", "64"],
+            "status": "active",
+        },
+    }

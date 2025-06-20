@@ -294,6 +294,18 @@ files = [
 all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
 
 [[package]]
+name = "ifcfg"
+version = "0.24"
+description = "Python ifconfig wrapper for Unix/Linux/MacOSX + ipconfig for Windows"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "ifcfg-0.24-py2.py3-none-any.whl", hash = "sha256:950f31ddc3fdd877724fb4154b744434471106088ecf10170b96063c24b3c0b7"},
+    {file = "ifcfg-0.24.tar.gz", hash = "sha256:64f60f7a0d15c85876b76b5f79246ed8c27bf5f79e5753ec88287145884661ab"},
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.1.0"
 description = "brain-dead simple config-ini parsing"
@@ -570,14 +582,14 @@ files = [
 
 [[package]]
 name = "urllib3"
-version = "2.4.0"
+version = "2.5.0"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "urllib3-2.4.0-py3-none-any.whl", hash = "sha256:4e16665048960a0900c702d4a66415956a584919c03361cac9f1df5c5dd7e813"},
-    {file = "urllib3-2.4.0.tar.gz", hash = "sha256:414bc6535b787febd7567804cc015fee39daab8ad86268f1310a9250697de466"},
+    {file = "urllib3-2.5.0-py3-none-any.whl", hash = "sha256:e6b01673c0fa6a13e374b50871808eb3bf7046c4b125b216f6bf1cc604cff0dc"},
+    {file = "urllib3-2.5.0.tar.gz", hash = "sha256:3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760"},
 ]
 
 [package.extras]
@@ -610,4 +622,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "7de1a05b4ce9cfe89a84fa6ea32d4d98734a69df5cc0fab949203475eda4767e"
+content-hash = "df9d7251bfab0354c3215e36de6d95a55ff783dc9d1e1e4aa897b6373a1977d2"
