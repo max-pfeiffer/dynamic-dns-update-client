@@ -1,7 +1,6 @@
 """Module for acquiring IP addresses."""
 
 import enum
-from pathlib import Path
 from subprocess import CalledProcessError
 from xml.etree import ElementTree
 
@@ -10,7 +9,7 @@ import ifcfg
 from requests import Response, get
 
 from dynamic_dns_update_client.constants import DYNDNS_URL, IPIFY_URL, IPIFY_V6_URL
-from dynamic_dns_update_client.utils import execute_cli_command
+from dynamic_dns_update_client.utils import execute_cli_command, file_exists
 
 
 class IpAddressProviderType(enum.Enum):
@@ -38,7 +37,7 @@ def openwrt_network(ip_network: str, ipv6: bool) -> str:
     else:
         openwrt_function = "network_get_ipaddr"
 
-    if Path(openwrt_script).exists():
+    if file_exists(openwrt_script):
         arguments = [
             "source",
             openwrt_script,

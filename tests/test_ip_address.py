@@ -23,8 +23,8 @@ def test_openwrt_network(
     openwrt_function_output = openwrt_test_data[0]
     ipv6 = openwrt_test_data[1]
 
-    mocker_cli_command_exists = mocker.patch(
-        "dynamic_dns_update_client.ip_address.cli_command_exists", return_value=True
+    mocked_file_exists = mocker.patch(
+        "dynamic_dns_update_client.ip_address.file_exists", return_value=True
     )
     mocked_execute_cli_command = mocker.patch(
         "dynamic_dns_update_client.ip_address.execute_cli_command",
@@ -32,7 +32,7 @@ def test_openwrt_network(
     )
     result = openwrt_network("wan", ipv6)
 
-    mocker_cli_command_exists.assert_called_once()
+    mocked_file_exists.assert_called_once()
     mocked_execute_cli_command.assert_called_once()
     if ipv6:
         assert result == "2a02:1210:5207:3100:1491:82ff:fe2e:2489"

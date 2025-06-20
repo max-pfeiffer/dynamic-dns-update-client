@@ -7,6 +7,7 @@ import click
 from dynamic_dns_update_client.dyn_dns_update import update_dyn_dns_provider
 from dynamic_dns_update_client.ip_address import IpAddressProviderType, get_ip_address
 from dynamic_dns_update_client.types import UrlParameterType, UrlType
+from dynamic_dns_update_client.utils import generate_url
 
 
 @click.command()
@@ -65,6 +66,13 @@ from dynamic_dns_update_client.types import UrlParameterType, UrlType
     envvar="DYNAMIC_DNS_UPDATE_CLIENT_BASIC_AUTH_PASSWORD",
     help="Basic Auth password for calling dynamic DNS provider URL.",
 )
+@click.option(
+    "--dry-run",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_DRY_RUN",
+    is_flag=True,
+    help="Instead of calling the dynamic DNS provider, "
+    "print the URL which would have been called.",
+)
 def cli(
     dynamic_dns_provider_url: str,
     ip_address_provider: IpAddressProviderType,
@@ -75,6 +83,7 @@ def cli(
     url_parameter: list[str] | None,
     basic_auth_username: str | None,
     basic_auth_password: str | None,
+    dry_run: bool,
 ) -> None:
     """Dynamic DNS Update Client.
 
@@ -116,12 +125,24 @@ def cli(
     )
     click.echo(f"Current IP address: {current_ip_address}")
 
-    update_dyn_dns_provider(
-        dynamic_dns_provider_url,
-        ip_address_url_parameter_name,
-        url_parameter,
-        basic_auth_username,
-        basic_auth_password,
-        current_ip_address,
-    )
-    click.echo("The IP address was successfully updated at the dynamic DNS provider.")
+    if dry_run:
+        url = generate_url(
+            dynamic_dns_provider_url,
+            ip_address_url_parameter_name,
+            url_parameter,
+            current_ip_address,
+        )
+        click.echo("Dry run, no changes will be made.")
+        click.echo(f"Dynamic DNS provider URL: {url}")
+    else:
+        update_dyn_dns_provider(
+            dynamic_dns_provider_url,
+            ip_address_url_parameter_name,
+            url_parameter,
+            basic_auth_username,
+            basic_auth_password,
+            current_ip_address,
+        )
+        click.echo(
+            "The IP address was successfully updated at the dynamic DNS provider."
+        )
