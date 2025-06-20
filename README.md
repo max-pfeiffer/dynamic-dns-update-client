@@ -2,6 +2,7 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![codecov](https://codecov.io/gh/max-pfeiffer/dynamic-dns-update-client/graph/badge.svg?token=lPYop1verl)](https://codecov.io/gh/max-pfeiffer/dynamic-dns-update-client)
 [![Pipeline](https://github.com/max-pfeiffer/dynamic-dns-update-client/actions/workflows/pipeline.yml/badge.svg)](https://github.com/max-pfeiffer/dynamic-dns-update-client/actions/workflows/pipeline.yml)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/dynamic-dns-update-client)
 
 # Dynamic DNS Update Client
 A CLI tool for updating the IP address at dynamic DNS providers.
@@ -20,7 +21,10 @@ It obtains the current IP address by different means depending on the `--ip-addr
 It then updates the obtained IP address with another HTTP GET request at the dynamic DNS provider using
 the specified URL parameters and authentication method.
 
-You can run it from any machine which has a Python v3 environment.
+You can run it from any machine that has a Python v3 environment.
+
+This CLI tool plays together nicely with my other project [simple-dynamic-dns-aws](https://github.com/max-pfeiffer/simple-dynamic-dns-aws).
+If you happen to have an AWS account, you can put together your own Dyn DNS server almost for free.
 
 ## Install
 ```shell
