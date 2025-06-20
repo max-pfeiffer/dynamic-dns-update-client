@@ -1,6 +1,6 @@
 [project]
 name = "dynamic-dns-update-client"
-version = "0.2.0"
+version = "0.3.0"
 description = "A CLI tool for updating the IP address at dynamic DNS providers."
 authors = [
     {name = "Max Pfeiffer",email = "max@maxpfeiffer.ch"}
