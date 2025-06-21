@@ -39,15 +39,8 @@ def openwrt_network(ip_network: str, ipv6: bool) -> str:
 
     if file_exists(openwrt_script):
         arguments = [
-            "source",
-            openwrt_script,
-            "&&",
-            openwrt_function,
-            "IP_ADDRESS",
-            ip_network,
-            "&&",
-            "echo",
-            "$IP_ADDRESS",
+            f"source {openwrt_script} && {openwrt_function} IP_ADDRESS {ip_network} "
+            f"&& echo $IP_ADDRESS",
         ]
         try:
             result: str = execute_cli_command(arguments)

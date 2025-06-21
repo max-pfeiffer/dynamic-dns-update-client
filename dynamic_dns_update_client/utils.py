@@ -13,7 +13,7 @@ def execute_cli_command(arguments: list[str]) -> str:
     :return:
     """
     result: CompletedProcess = run(
-        arguments, capture_output=True, text=True, check=True
+        arguments, capture_output=True, text=True, check=True, shell=True
     )
     return result.stdout
 
@@ -21,7 +21,7 @@ def execute_cli_command(arguments: list[str]) -> str:
 def file_exists(path: str) -> bool:
     """Get IP address for a network.
 
-    :param command:
+    :param path:
     :return:
     """
     return Path(path).exists()
