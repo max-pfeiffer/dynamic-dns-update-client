@@ -14,7 +14,7 @@ def test_execute_cli_command() -> None:
 
     :return:
     """
-    result = execute_cli_command(["echo test"])
+    result = execute_cli_command("echo test")
     assert "test" in result
 
 

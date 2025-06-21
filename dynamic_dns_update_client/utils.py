@@ -6,7 +6,7 @@ from subprocess import CompletedProcess, run
 from requests.models import PreparedRequest
 
 
-def execute_cli_command(arguments: list[str]) -> str:
+def execute_cli_command(arguments: str) -> str:
     """Execute a command.
 
     :param arguments:
