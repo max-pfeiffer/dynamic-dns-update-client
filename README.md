@@ -106,7 +106,7 @@ Use the `--dry-run` option to check if your CLI call is correct:
 $ dynamic-dns-update-client https://example.com --ip-address-url-parameter-name ip-address --url-parameter domain=example.com --url-parameter api-token=nd4u33huruffbn --dry-run
 Current IP address: 82.4.110.122
 Dry run, no changes will be made.
-Dynamic DNS provider URL: https://example.com/?ip-address=85.3.109.133&domain=example.com&api-token=nd4u33huruffbn
+Dynamic DNS provider URL: https://example.com/?ip-address=82.4.110.122&domain=example.com&api-token=nd4u33huruffbn
 ```
 `dynamic-dns-update-client` will call that URL effectively when you scratch that `--dry-run` option after your test.
 
