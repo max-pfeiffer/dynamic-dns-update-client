@@ -38,10 +38,10 @@ def openwrt_network(ip_network: str, ipv6: bool) -> str:
         openwrt_function = "network_get_ipaddr"
 
     if file_exists(openwrt_script):
-        arguments = [
-            f"source {openwrt_script} && {openwrt_function} IP_ADDRESS {ip_network} "
-            f"&& echo $IP_ADDRESS",
-        ]
+        arguments = (
+            f"source {openwrt_script} && {openwrt_function} "
+            f"IP_ADDRESS {ip_network} && echo $IP_ADDRESS"
+        )
         try:
             result: str = execute_cli_command(arguments)
             ip_address = result.strip()

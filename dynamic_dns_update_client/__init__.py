@@ -24,6 +24,12 @@ from dynamic_dns_update_client.utils import generate_url
     help=f"Type of IP address provider. Default: {IpAddressProviderType.IPIFY.value}",
 )
 @click.option(
+    "--ipv6",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_IPV6",
+    is_flag=True,
+    help="Obtain IP V6 address from IP address provider.",
+)
+@click.option(
     "--ip-network",
     envvar="DYNAMIC_DNS_UPDATE_CLIENT_IP_NETWORK",
     default="wan",
@@ -34,12 +40,6 @@ from dynamic_dns_update_client.utils import generate_url
     envvar="DYNAMIC_DNS_UPDATE_CLIENT_IP_INTERFACE",
     default="eth0",
     help="Physical interface to look for the public IP address. Default: eth0",
-)
-@click.option(
-    "--ipv6",
-    envvar="DYNAMIC_DNS_UPDATE_CLIENT_IPV6",
-    is_flag=True,
-    help="Use IP V6 addresses.",
 )
 @click.option(
     "--ip-address-url-parameter-name",
@@ -54,7 +54,7 @@ from dynamic_dns_update_client.utils import generate_url
     type=UrlParameterType(),
     multiple=True,
     help="URL parameter which will be appended to the dynamic DNS provider URL. "
-    "Format: param=value",
+    "You can specify this option multiple times. Format: param=value",
 )
 @click.option(
     "--basic-auth-username",
@@ -76,9 +76,9 @@ from dynamic_dns_update_client.utils import generate_url
 def cli(
     dynamic_dns_provider_url: str,
     ip_address_provider: IpAddressProviderType,
+    ipv6: bool,
     ip_network: str,
     ip_interface: str,
-    ipv6: bool,
     ip_address_url_parameter_name: str,
     url_parameter: list[str] | None,
     basic_auth_username: str | None,
@@ -87,13 +87,23 @@ def cli(
 ) -> None:
     """Dynamic DNS Update Client.
 
-    A CLI tool for updating the IP address for dynamic DNS providers.
-    It obtains the current IP address by calling one the following IP address services
-    using a HTTP GET request:
+    A CLI tool for obtaining and updating your public IP address at dynamic DNS
+    providers.
 
-    - ipfy: https://www.ipify.org/
+    It obtains the current IP address by different means depending on the
+    --ip-address-provider option:
 
-    - dyndns: https://help.dyn.com/remote-access-api/checkip-tool/
+    - openwrt_network: on an OpenWRT device by calling OpenWRT specific functions,
+      specify network with --ip-network
+
+    - interface: physical network interface to look for the public IP address,
+      specify interface with --ip-interface
+
+    - by calling one of the following IP address services using an HTTP GET request:
+
+        - ipify: https://www.ipify.org/
+
+        - dyndns: https://help.dyn.com/remote-access-api/checkip-tool/
 
     It then updates the obtained IP address with another HTTP GET request at the dynamic
     DNS provider using the specified URL parameters and authentication method.
