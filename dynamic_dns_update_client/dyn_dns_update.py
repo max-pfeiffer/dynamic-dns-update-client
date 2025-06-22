@@ -3,11 +3,13 @@
 from requests import Response, get
 from requests.auth import HTTPBasicAuth
 
+from dynamic_dns_update_client.utils import create_url_parameter
+
 
 def update_dyn_dns_provider(
     dynamic_dns_provider_url: str,
     ip_address_url_parameter_name: str,
-    url_parameter: list[str],
+    url_parameter: tuple[str],
     basic_auth_username: str,
     basic_auth_password: str,
     current_ip_address: str,
@@ -22,10 +24,9 @@ def update_dyn_dns_provider(
     :param current_ip_address:
     :return:
     """
-    params: dict[str, str] = {ip_address_url_parameter_name: current_ip_address}
-    for data in url_parameter:
-        parts = data.split("=")
-        params[parts[0]] = parts[1]
+    params = create_url_parameter(
+        ip_address_url_parameter_name, url_parameter, current_ip_address
+    )
 
     if basic_auth_username and basic_auth_password:
         basic_auth: HTTPBasicAuth = HTTPBasicAuth(

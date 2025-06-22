@@ -27,10 +27,44 @@ def file_exists(path: str) -> bool:
     return Path(path).exists()
 
 
+def create_url_parameter(
+    ip_address_url_parameter_name: str,
+    url_parameter: tuple[str],
+    current_ip_address: str,
+) -> dict[str, str | list[str]]:
+    """Create URL parameter.
+
+    :param ip_address_url_parameter_name:
+    :param url_parameter:
+    :param current_ip_address:
+    :return:
+    """
+    params: dict[str, str | list[str]] = {
+        ip_address_url_parameter_name: current_ip_address
+    }
+
+    for data in url_parameter:
+        parts = data.split("=")
+        key = parts[0]
+        value = parts[1]
+
+        if key in params.keys():
+            if isinstance(params[key], list):
+                value_list: list[str] = params[key]
+                value_list.append(value)
+                params[key] = value_list
+            else:
+                params[key] = [params[key], value]
+        else:
+            params[key] = value
+
+    return params
+
+
 def generate_url(
     dynamic_dns_provider_url: str,
     ip_address_url_parameter_name: str,
-    url_parameter: list[str],
+    url_parameter: tuple[str],
     current_ip_address: str,
 ) -> str:
     """Send IP address update to dynamic DNS provider.
@@ -41,10 +75,11 @@ def generate_url(
     :param current_ip_address:
     :return:
     """
-    params: dict[str, str] = {ip_address_url_parameter_name: current_ip_address}
-    for data in url_parameter:
-        parts = data.split("=")
-        params[parts[0]] = parts[1]
+    params = create_url_parameter(
+        ip_address_url_parameter_name, url_parameter, current_ip_address
+    )
+
+    # See: https://requests.readthedocs.io/en/latest/user/advanced/#prepared-requests
     prepared_request = PreparedRequest()
     prepared_request.prepare_url(dynamic_dns_provider_url, params)
     return prepared_request.url
