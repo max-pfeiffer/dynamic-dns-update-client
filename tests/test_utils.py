@@ -79,7 +79,7 @@ def test_generate_url() -> None:
     result = generate_url(
         "https://example.com",
         "ip",
-        ["foo=bar", "boom=bang", "cat=mouse"],
+        ("foo=bar", "boom=bang", "cat=mouse"),
         "192.168.11.11",
     )
     assert result == "https://example.com/?ip=192.168.11.11&foo=bar&boom=bang&cat=mouse"

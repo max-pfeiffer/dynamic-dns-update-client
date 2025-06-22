@@ -80,7 +80,7 @@ def cli(
     ip_network: str,
     ip_interface: str,
     ip_address_url_parameter_name: str,
-    url_parameter: list[str] | None,
+    url_parameter: tuple[str, ...] | None,
     basic_auth_username: str | None,
     basic_auth_password: str | None,
     dry_run: bool,

@@ -29,7 +29,7 @@ def file_exists(path: str) -> bool:
 
 def create_url_parameter(
     ip_address_url_parameter_name: str,
-    url_parameter: tuple[str],
+    url_parameter: tuple[str, ...],
     current_ip_address: str,
 ) -> dict[str, str | list[str]]:
     """Create URL parameter.
@@ -64,7 +64,7 @@ def create_url_parameter(
 def generate_url(
     dynamic_dns_provider_url: str,
     ip_address_url_parameter_name: str,
-    url_parameter: tuple[str],
+    url_parameter: tuple[str, ...],
     current_ip_address: str,
 ) -> str:
     """Send IP address update to dynamic DNS provider.
