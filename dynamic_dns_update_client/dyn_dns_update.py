@@ -9,7 +9,7 @@ from dynamic_dns_update_client.utils import create_url_parameter
 def update_dyn_dns_provider(
     dynamic_dns_provider_url: str,
     ip_address_url_parameter_name: str,
-    url_parameter: tuple[str],
+    url_parameter: tuple[str, ...] | None,
     basic_auth_username: str,
     basic_auth_password: str,
     current_ip_address: str,

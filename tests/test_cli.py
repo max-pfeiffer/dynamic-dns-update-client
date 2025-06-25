@@ -37,6 +37,16 @@ from tests.utils import FakeResponse
             "--basic-auth-password",
             "password",
         ],
+        [
+            "https://example.com",
+            "--ip-address-provider",
+            "ipify",
+            "--ip-address-url-parameter-name",
+            "ip",
+            "--url-parameter",
+            "foo=bar",
+            "--dry-run",
+        ],
     ],
 )
 def test_cli(cli_runner: CliRunner, mocker: MockerFixture, args: list[str]) -> None:
@@ -63,7 +73,10 @@ def test_cli(cli_runner: CliRunner, mocker: MockerFixture, args: list[str]) -> N
     )
     assert result.exit_code == 0
     mocked_ip_address_get.assert_called_once()
-    mocked_update_get.assert_called_once()
+    if "--dry-run" in args:
+        mocked_update_get.assert_not_called()
+    else:
+        mocked_update_get.assert_called_once()
 
 
 @pytest.mark.parametrize(
