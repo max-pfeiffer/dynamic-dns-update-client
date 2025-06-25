@@ -34,14 +34,14 @@ from dynamic_dns_update_client.utils import generate_url
     help="Obtain IP V6 address from IP address provider.",
 )
 @click.option(
-    "--ip-network",
-    envvar="DYNAMIC_DNS_UPDATE_CLIENT_IP_NETWORK",
+    "--openwrt-network",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_OPENWRT_NETWORK",
     default="wan",
     help="OpenWRT network to look for the public IP address. Default: wan",
 )
 @click.option(
-    "--ip-interface",
-    envvar="DYNAMIC_DNS_UPDATE_CLIENT_IP_INTERFACE",
+    "--interface",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_INTERFACE",
     default="eth0",
     help="Physical interface to look for the public IP address. Default: eth0",
 )
@@ -93,8 +93,8 @@ def cli(
     dynamic_dns_provider_url: str,
     ip_address_provider: IpAddressProviderType,
     ipv6: bool,
-    ip_network: str,
-    ip_interface: str,
+    openwrt_network: str,
+    interface: str,
     ip_address_url_parameter_name: str,
     url_parameter: tuple[str, ...] | None,
     basic_auth_username: str | None,
@@ -130,8 +130,8 @@ def cli(
 
     :param dynamic_dns_provider_url:
     :param ip_address_provider:
-    :param ip_network:
-    :param ip_interface:
+    :param openwrt_network:
+    :param interface:
     :param ipv6:
     :param ip_address_url_parameter_name:
     :param url_parameter:
@@ -154,7 +154,7 @@ def cli(
 
     # Obtain current IP address
     current_ip_address: str = get_ip_address(
-        ip_address_provider, ip_network, ip_interface, ipv6
+        ip_address_provider, openwrt_network, interface, ipv6
     )
     click.echo(f"Current IP address: {current_ip_address}")
 
