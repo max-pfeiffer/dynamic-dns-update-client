@@ -8,6 +8,7 @@ from dynamic_dns_update_client.cache import (
     read_cached_ip_address,
     write_cached_ip_address,
 )
+from dynamic_dns_update_client.constants import CACHE_FILE
 from dynamic_dns_update_client.dyn_dns_update import update_dyn_dns_provider
 from dynamic_dns_update_client.ip_address import IpAddressProviderType, get_ip_address
 from dynamic_dns_update_client.types import UrlParameterType, UrlType
@@ -86,8 +87,8 @@ from dynamic_dns_update_client.utils import generate_url
 @click.option(
     "--cache-file",
     envvar="DYNAMIC_DNS_UPDATE_CLIENT_CACHE_FILE",
-    default="/tmp/dynamic_dns_update_client_cache",
-    help="Cache file for the IP address.",
+    default=CACHE_FILE,
+    help=f"Cache file for the IP address. Default: {CACHE_FILE}",
 )
 def cli(
     dynamic_dns_provider_url: str,
