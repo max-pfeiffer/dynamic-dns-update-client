@@ -79,9 +79,9 @@ Options:
                                   Type of IP address provider. Default: ipify
   --ipv6                          Obtain IP V6 address from IP address
                                   provider.
-  --ip-network TEXT               OpenWRT network to look for the public IP
+  --openwrt-network TEXT          OpenWRT network to look for the public IP
                                   address. Default: wan
-  --ip-interface TEXT             Physical interface to look for the public IP
+  --interface TEXT                Physical interface to look for the public IP
                                   address. Default: eth0
   --ip-address-url-parameter-name TEXT
                                   Name of the URL parameter for IP address. It
@@ -97,6 +97,9 @@ Options:
                                   provider URL.
   --dry-run                       Instead of calling the dynamic DNS provider,
                                   print the URL which would have been called.
+  --cache-ip-address              Cache the IP address.
+  --cache-file TEXT               Cache file for the IP address. Default:
+                                  /tmp/dynamic_dns_update_client_cache
   --help                          Show this message and exit.
 ```
 
@@ -123,6 +126,8 @@ DYNAMIC_DNS_UPDATE_CLIENT_URL_PARAMETER="foo=bar boom=bang cat=mouse"
 DYNAMIC_DNS_UPDATE_CLIENT_BASIC_AUTH_USERNAME=username
 DYNAMIC_DNS_UPDATE_CLIENT_BASIC_AUTH_PASSWORD=password
 DYNAMIC_DNS_UPDATE_CLIENT_DRY_RUN=0
+DYNAMIC_DNS_UPDATE_CLIENT_CACHE_IP_ADDRESS=1
+DYNAMIC_DNS_UPDATE_CLIENT_CACHE_FILE=/tmp/custom_cache_file
 ```
 
 ## Known issues

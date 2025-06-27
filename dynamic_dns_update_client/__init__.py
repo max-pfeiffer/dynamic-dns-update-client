@@ -4,6 +4,11 @@
 
 import click
 
+from dynamic_dns_update_client.cache import (
+    read_cached_ip_address,
+    write_cached_ip_address,
+)
+from dynamic_dns_update_client.constants import CACHE_FILE
 from dynamic_dns_update_client.dyn_dns_update import update_dyn_dns_provider
 from dynamic_dns_update_client.ip_address import IpAddressProviderType, get_ip_address
 from dynamic_dns_update_client.types import UrlParameterType, UrlType
@@ -30,14 +35,14 @@ from dynamic_dns_update_client.utils import generate_url
     help="Obtain IP V6 address from IP address provider.",
 )
 @click.option(
-    "--ip-network",
-    envvar="DYNAMIC_DNS_UPDATE_CLIENT_IP_NETWORK",
+    "--openwrt-network",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_OPENWRT_NETWORK",
     default="wan",
     help="OpenWRT network to look for the public IP address. Default: wan",
 )
 @click.option(
-    "--ip-interface",
-    envvar="DYNAMIC_DNS_UPDATE_CLIENT_IP_INTERFACE",
+    "--interface",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_INTERFACE",
     default="eth0",
     help="Physical interface to look for the public IP address. Default: eth0",
 )
@@ -73,17 +78,31 @@ from dynamic_dns_update_client.utils import generate_url
     help="Instead of calling the dynamic DNS provider, "
     "print the URL which would have been called.",
 )
+@click.option(
+    "--cache-ip-address",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_CACHE_IP_ADDRESS",
+    is_flag=True,
+    help="Cache the IP address.",
+)
+@click.option(
+    "--cache-file",
+    envvar="DYNAMIC_DNS_UPDATE_CLIENT_CACHE_FILE",
+    default=CACHE_FILE,
+    help=f"Cache file for the IP address. Default: {CACHE_FILE}",
+)
 def cli(
     dynamic_dns_provider_url: str,
     ip_address_provider: IpAddressProviderType,
     ipv6: bool,
-    ip_network: str,
-    ip_interface: str,
+    openwrt_network: str,
+    interface: str,
     ip_address_url_parameter_name: str,
     url_parameter: tuple[str, ...] | None,
     basic_auth_username: str | None,
     basic_auth_password: str | None,
     dry_run: bool,
+    cache_ip_address: bool,
+    cache_file: str,
 ) -> None:
     """Dynamic DNS Update Client.
 
@@ -112,15 +131,19 @@ def cli(
 
     :param dynamic_dns_provider_url:
     :param ip_address_provider:
-    :param ip_network:
-    :param ip_interface:
+    :param openwrt_network:
+    :param interface:
     :param ipv6:
     :param ip_address_url_parameter_name:
     :param url_parameter:
     :param basic_auth_username:
     :param basic_auth_password:
+    :param dry_run:
+    :param cache_ip_address:
+    :param cache_file:
     :return:
     """
+    # Verify basic auth options
     if basic_auth_username and basic_auth_password is None:
         raise click.BadOptionUsage(
             "--basic-auth-password", "Please specify also a Basic Auth password."
@@ -130,10 +153,19 @@ def cli(
             "--basic-auth-username", "Please specify also a Basic Auth username."
         )
 
+    # Obtain current IP address
     current_ip_address: str = get_ip_address(
-        ip_address_provider, ip_network, ip_interface, ipv6
+        ip_address_provider, openwrt_network, interface, ipv6
     )
     click.echo(f"Current IP address: {current_ip_address}")
+
+    # Obtain cached IP address and cache current IP address
+    if cache_ip_address:
+        cached_ip_address = read_cached_ip_address(cache_file)
+        write_cached_ip_address(current_ip_address, cache_file)
+        click.echo(f"Cached IP address: {current_ip_address}")
+    else:
+        cached_ip_address = None
 
     if dry_run:
         url = generate_url(
@@ -145,14 +177,20 @@ def cli(
         click.echo("Dry run, no changes will be made.")
         click.echo(f"Dynamic DNS provider URL: {url}")
     else:
-        update_dyn_dns_provider(
-            dynamic_dns_provider_url,
-            ip_address_url_parameter_name,
-            url_parameter,
-            basic_auth_username,
-            basic_auth_password,
-            current_ip_address,
-        )
-        click.echo(
-            "The IP address was successfully updated at the dynamic DNS provider."
-        )
+        if cached_ip_address and cached_ip_address == current_ip_address:
+            click.echo(
+                "Current IP address equals cached IP address, "
+                "so no update will be made."
+            )
+        else:
+            update_dyn_dns_provider(
+                dynamic_dns_provider_url,
+                ip_address_url_parameter_name,
+                url_parameter,
+                basic_auth_username,
+                basic_auth_password,
+                current_ip_address,
+            )
+            click.echo(
+                "The IP address was successfully updated at the dynamic DNS provider."
+            )
