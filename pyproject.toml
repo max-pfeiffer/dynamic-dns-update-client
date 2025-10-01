@@ -27,7 +27,7 @@ build-backend = "poetry.core.masonry.api"
 pytest = "8.4.0"
 pytest-cov = "6.1.1"
 ruff = "0.12.7"
-pre-commit = "4.2.0"
+pre-commit = "4.3.0"
 pytest-mock = "^3.14.1"
 
 [tool.poetry.scripts]
