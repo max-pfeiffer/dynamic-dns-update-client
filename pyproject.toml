@@ -28,7 +28,7 @@ pytest = "8.4.0"
 pytest-cov = "6.1.1"
 ruff = "0.12.7"
 pre-commit = "4.2.0"
-pytest-mock = "^3.14.1"
+pytest-mock = "^3.15.1"
 
 [tool.poetry.scripts]
 dynamic-dns-update-client = 'dynamic_dns_update_client:cli'
